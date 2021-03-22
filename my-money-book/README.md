@@ -1,7 +1,7 @@
 # 创建项目目录
-cnpm install -g create-react-app  || yarn global add create-react-app.\
-npx create-react-app my-money-book.\
-cd my-money-book/  .\
+cnpm install -g create-react-app  || yarn global add create-react-app\
+npx create-react-app my-money-book\
+cd my-money-book/  \
 npm start 
 
 # Getting Started with Create React App
