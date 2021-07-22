@@ -2,9 +2,10 @@ import React,{Compontent} from 'react'
 import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
-import { LIST_VIEW, CHART_VIEW} from './utility'
+import { LIST_VIEW, CHART_VIEW } from './utility'
 import PriceList from './components/PriceList'
 import ViewTab from './components/ViewTab'
+import MonthPicker from './components/MonthPicker'
 
 const items=[
   {
@@ -45,6 +46,10 @@ function App() {
         items={items} 
         onModifyItem={(item)=>alert(item.id)} 
         onDeleteItem={(item)=>alert(item.id)}/>
+      <MonthPicker 
+        year={2018}
+        month={5}
+      />
     </div>
   );
 }
