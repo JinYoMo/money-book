@@ -2,7 +2,10 @@ import React,{Compontent} from 'react'
 import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
+import { LIST_VIEW, CHART_VIEW} from './utility'
 import PriceList from './components/PriceList'
+import ViewTab from './components/ViewTab'
+
 const items=[
   {
     id:1,
@@ -12,7 +15,8 @@ const items=[
     category:{
       id:1,
       name:"旅行",
-      type:'outcome'
+      type:'outcome',
+      iconName:'ios-plane'
     }
   },
   {
@@ -23,7 +27,8 @@ const items=[
     category:{
       id:1,
       name:"旅行",
-      type:'income'
+      type:'income',
+      iconName:'ios-plane'
     }
   }
 ]
@@ -35,6 +40,7 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <h1 className="App-title">Welcome to React</h1>
       </header>
+      <ViewTab activeTab={LIST_VIEW} onTabChange={(view) => {console.log(view)}} />
       <PriceList 
         items={items} 
         onModifyItem={(item)=>alert(item.id)} 
