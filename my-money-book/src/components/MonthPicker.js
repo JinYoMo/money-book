@@ -6,18 +6,33 @@ class MonthPicker extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-          isOpen: false
+          isOpen: false,
+          selectYear: this.props.year,
+          selectMonth: this.props.month
         }
     }
     toggleDropdown = (event) => {
-        event.preventDefault();
-        this.setState({
-            isOpen: !this.state.isOpen
-        })
+      event.preventDefault();
+      this.setState({
+        isOpen: !this.state.isOpen
+      })
+    }
+    selectYear = (event, yearNumber) => {
+      event.preventDefault()
+      this.setState({
+        selectYear: yearNumber
+      })
+    }
+    selectMonth = (event, monthNumber) => {
+      event.preventDefault()
+      this.setState({
+        isOpen: false
+      })
+      this.props.onChange(this.state.selectYear, monthNumber)
     }
     render(){
         const {year, month} = this.props
-        const { isOpen } = this.state
+        const { isOpen, selectYear, selectMonth } = this.state
         const monthRange = range(12,1)
         const yearRange = range(9,-4).map(number => number + year)
         return (
@@ -34,14 +49,22 @@ class MonthPicker extends React.Component {
                     <div className="row">
                         <div className="col border-right">
                            {yearRange.map((yearNumber,index)=>
-                             <a key={index} className="dropdown-item">
+                             <a key={index} 
+                               href="#"
+                               onClick={(event) => {this.selectYear(event, yearNumber)}}
+                               className={(yearNumber === selectYear) ? 'dropdown-item active':'dropdown-item'}
+                              >
                                 {yearNumber} 年
                              </a>
                            )}
                         </div>
                         <div className="col">
                            {monthRange.map((monthNumber,index)=>
-                             <a key={index} className="dropdown-item">
+                             <a key={index} 
+                               href="#"
+                               onClick={(event) => {this.selectMonth(event, monthNumber)}}
+                               className={(monthNumber === selectMonth) ? 'dropdown-item active':'dropdown-item'}
+                             >
                                 {padLeft(monthNumber)} 月
                              </a>
                            )}
