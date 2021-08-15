@@ -8,7 +8,7 @@ import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalPrice from '../components/TotalPrice'
 
-const categorys = {
+export const categorys = {
     "1" : {
         id:1,
         name:"旅行",
@@ -23,7 +23,7 @@ const categorys = {
     }
 }
 
-const items=[
+export const items=[
     {
       id:1,
       title:'去云南旅游',
