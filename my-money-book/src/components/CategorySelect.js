@@ -1,6 +1,7 @@
 import React from 'react'
 import IonIcon from 'react-ionicons'
 import PropTypes from 'prop-types'
+import { Colors } from '../utility'
 
 class CategorySelect extends React.Component {
    constructor(props){
@@ -24,6 +25,8 @@ class CategorySelect extends React.Component {
              <div className="row">
                 {
                     categories.map((category, index) => {
+                        const iconColor = (category.id === selectedCategoryId) ? Colors.white : Colors.gray
+                        const backColor = (category.id === selectedCategoryId) ? Colors.blue : Colors.lightGray
                         const activeClassName = (selectedCategoryId === category.id)
                           ? 'category-item col-3 active' : 'category-item col-3'
                         return (
@@ -31,8 +34,9 @@ class CategorySelect extends React.Component {
                             onClick = {(event) => { this.selectedCategory(event, category) }}>
                                 <IonIcon 
                                    className = "rounded-circle"
+                                   style={{ backgroundColor: backColor, padding: '5px' }} 
                                    fontSize = "50px"
-                                   color = "#555"
+                                   color = {iconColor}
                                    icon = {category.iconName}
                                 />
                                  <p>{category.name}</p>
