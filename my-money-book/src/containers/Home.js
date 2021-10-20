@@ -4,7 +4,6 @@ import logo from '../logo.svg';
 
 import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
 import PriceList from '../components/PriceList'
-import ViewTab from '../components/ViewTab'
 import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalPrice from '../components/TotalPrice'
@@ -102,6 +101,7 @@ export const items=[
     }
     render(){
       const { items, currentDate, tabView } = this.state
+      const tabIndex = tabsText.findIndex(tabText => tabText === tabView)
       const itemsWithCategory = items.map(item => {
           item.category = categorys[item.cid]
           return item
@@ -139,7 +139,7 @@ export const items=[
             </div>
           </header>
           <div className="content-area py-3 px-3" >
-            <Tabs activeIndex={0} onTabChange={this.changeView}>
+            <Tabs activeIndex={tabIndex} onTabChange={this.changeView}>
               <Tab>
                 <Ionicon 
                   className="rounded-circle mr-2"
@@ -159,10 +159,6 @@ export const items=[
                   图表模式
               </Tab>
             </Tabs>
-            <ViewTab 
-              activeTab={tabView}
-              onTabChange={this.changeView}
-            />
             <CreateBtn onClick={this.createItem} />
             {
               tabView === LIST_VIEW &&

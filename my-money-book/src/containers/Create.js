@@ -1,35 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import CategorySelect from '../components/CategorySelect'
+import { Tabs, Tab } from '../components/Tabs'
 import PriceFrom from '../components/PriceForm'
+import { testCategories } from '../testData'
+import { TYPE_INCOME, TYPE_OUTCOME } from '../utility'
 
-const filterCategories = [
-    {
-        "id": 1,
-        "name": '旅行',
-        "type": 'outcome',
-        "iconName": 'ios-plane'
-    },
-    {
-        "id": 2,
-        "name": '理财',
-        "type": 'income',
-        "iconName": 'logo-yen'
-    },
-    {
-        "id": 3,
-        "name": '理财',
-        "type": 'income',
-        "iconName": 'logo-yen'
-    }
-]
+const tabsText = [TYPE_OUTCOME, TYPE_INCOME]
 class CreatePage extends React.Component {
    constructor(props) {
       super(props)
       this.state = {
+        selectedTab: TYPE_OUTCOME,
         selectedCategory: null,
         validationPassed: true,
       }
+   }
+   tabChange = (index) => {
+     this.setState({
+      selectedTab: tabsText[index],
+     })
    }
    selectCategory = (category) => {
      this.setState({
@@ -50,7 +40,9 @@ class CreatePage extends React.Component {
     this.props.history.push('/')
    }
    render() {
-       const { selectedCategory, validationPassed } = this.state
+       const { selectedTab, selectedCategory, validationPassed } = this.state
+       const tabIndex = tabsText.findIndex(text => text === selectedTab)
+       const filterCategories = testCategories.filter(category => category.type === selectedTab)
        const editItem = {
         "title": "buy stuff for kitten",
         "price": 100,
@@ -62,10 +54,14 @@ class CreatePage extends React.Component {
       }
        return (
            <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}} >
+              <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
+                 <Tab>支出</Tab>
+                 <Tab>收入</Tab>
+              </Tabs>
               <CategorySelect categories={filterCategories} 
                 onSelectCategory={this.selectCategory}
                 selectedCategory={selectedCategory}
-                />
+              />
               <PriceFrom onFormSubmit = {this.submitFrom} 
                 onCancelSubmit = {this.cancelSubmit}
                 item = {editItem}
