@@ -5,6 +5,7 @@ import { Tabs, Tab } from '../components/Tabs'
 import PriceFrom from '../components/PriceForm'
 import { testCategories } from '../testData'
 import { TYPE_INCOME, TYPE_OUTCOME } from '../utility'
+import { AppContext } from '../App'
 
 const tabsText = [TYPE_OUTCOME, TYPE_INCOME]
 class CreatePage extends React.Component {
@@ -53,25 +54,31 @@ class CreatePage extends React.Component {
         "timestamp": 1534291200000
       }
        return (
-           <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}} >
-              <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
-                 <Tab>支出</Tab>
-                 <Tab>收入</Tab>
-              </Tabs>
-              <CategorySelect categories={filterCategories} 
-                onSelectCategory={this.selectCategory}
-                selectedCategory={selectedCategory}
-              />
-              <PriceFrom onFormSubmit = {this.submitFrom} 
-                onCancelSubmit = {this.cancelSubmit}
-                item = {editItem}
-              />
-              { !validationPassed &&
-                <div className="alert alert-danger mt-5" role="alert">
-                    请选择分类信息
-                </div>
-              }
-           </div>
+         <AppContext.Consumer>
+           {({state}) => {
+             return (
+              <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}} > 
+                <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
+                  <Tab>支出</Tab>
+                  <Tab>收入</Tab>
+                </Tabs>
+                <CategorySelect categories={filterCategories} 
+                  onSelectCategory={this.selectCategory}
+                  selectedCategory={selectedCategory}
+                />
+                <PriceFrom onFormSubmit = {this.submitFrom} 
+                  onCancelSubmit = {this.cancelSubmit}
+                  item = {editItem}
+                />
+                { !validationPassed &&
+                  <div className="alert alert-danger mt-5" role="alert">
+                      请选择分类信息
+                  </div>
+                }
+              </div>
+             )
+           }}
+        </AppContext.Consumer>
        )
    }
 }
