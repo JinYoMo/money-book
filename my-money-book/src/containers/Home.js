@@ -8,7 +8,7 @@ import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalPrice from '../components/TotalPrice'
 import { Tabs, Tab } from '../components/Tabs';
-import { AppContext } from '../App'
+import withContext from '../WithContext'
 
 export const categorys = {
     "1" : {
@@ -101,6 +101,7 @@ export const items=[
       })
     }
     render(){
+      const { data } = this.props
       const { items, currentDate, tabView } = this.state
       const tabIndex = tabsText.findIndex(tabText => tabText === tabView)
       const itemsWithCategory = items.map(item => {
@@ -118,71 +119,65 @@ export const items=[
         }
       })
       return (
-        <AppContext.Consumer>
-          {({state}) => {
-            return (
-              <React.Fragment>
-                <header className="App-header">
-                  <div className="row mb-5">
-                    <img src={logo} className="App-logo" alt="logo" />
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                        <MonthPicker 
-                          year={ currentDate.year }
-                          month={ currentDate.month }
-                          onChange={this.changeDate}
-                        />
-                    </div>
-                    <div className="col">
-                        <TotalPrice 
-                          income = {totalIncome}
-                          outcome = {totalOutcome}
-                        />
-                    </div>
-                  </div>
-                </header>
-                <div className="content-area py-3 px-3" >
-                  <Tabs activeIndex={tabIndex} onTabChange={this.changeView}>
-                    <Tab>
-                      <Ionicon 
-                        className="rounded-circle mr-2"
-                        fontSize="20px"
-                        color={'#007bff'}
-                        icon="ios-paper"
-                      />
-                        列表模式
-                    </Tab>
-                    <Tab>
-                      <Ionicon 
-                      className="rounded-circle mr-2"
-                      fontSize="20px"
-                      color={'#007bff'}
-                      icon="ios-pie"
-                      />
-                        图表模式
-                    </Tab>
-                  </Tabs>
-                  <CreateBtn onClick={this.createItem} />
-                  {
-                    tabView === LIST_VIEW &&
-                    <PriceList 
-                      items={itemsWithCategory}
-                      onModifyItem={this.modifyItem}
-                      onDeleteItem={this.deleteItem}
-                    />
-                  }
-                  {
-                    tabView === CHART_VIEW &&
-                    <h1 className="chart-title">这里是图表区域</h1>
-                  }
-                </div>
-              </React.Fragment>
-            )
-          }}
-        </AppContext.Consumer>
+        <React.Fragment>
+          <header className="App-header">
+            <div className="row mb-5">
+              <img src={logo} className="App-logo" alt="logo" />
+            </div>
+            <div className="row">
+              <div className="col">
+                <MonthPicker 
+                  year={ currentDate.year }
+                  month={ currentDate.month }
+                  onChange={this.changeDate}
+                />
+              </div>
+              <div className="col">
+                <TotalPrice 
+                  income = {totalIncome}
+                  outcome = {totalOutcome}
+                />
+              </div>
+            </div>
+          </header>
+          <div className="content-area py-3 px-3" >
+            <Tabs activeIndex={tabIndex} onTabChange={this.changeView}>
+              <Tab>
+                <Ionicon 
+                  className="rounded-circle mr-2"
+                  fontSize="20px"
+                  color={'#007bff'}
+                  icon="ios-paper"
+                />
+                  列表模式
+              </Tab>
+              <Tab>
+                <Ionicon 
+                  className="rounded-circle mr-2"
+                  fontSize="20px"
+                  color={'#007bff'}
+                  icon="ios-pie"
+                />
+                  图表模式
+              </Tab>
+            </Tabs>
+            <CreateBtn onClick={this.createItem} />
+            {
+              tabView === LIST_VIEW &&
+              <PriceList 
+                items={itemsWithCategory}
+                onModifyItem={this.modifyItem}
+                onDeleteItem={this.deleteItem}
+              />
+            }
+            {
+              tabView === CHART_VIEW &&
+              <h1 className="chart-title">这里是图表区域</h1>
+            }
+          </div>
+        </React.Fragment>
       )
     }
   }
 
-  export default Home
+  export default withContext(Home)

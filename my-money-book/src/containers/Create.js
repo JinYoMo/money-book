@@ -5,7 +5,7 @@ import { Tabs, Tab } from '../components/Tabs'
 import PriceFrom from '../components/PriceForm'
 import { testCategories } from '../testData'
 import { TYPE_INCOME, TYPE_OUTCOME } from '../utility'
-import { AppContext } from '../App'
+import withContext from '../WithContext'
 
 const tabsText = [TYPE_OUTCOME, TYPE_INCOME]
 class CreatePage extends React.Component {
@@ -41,6 +41,7 @@ class CreatePage extends React.Component {
     this.props.history.push('/')
    }
    render() {
+       const { data } = this.props
        const { selectedTab, selectedCategory, validationPassed } = this.state
        const tabIndex = tabsText.findIndex(text => text === selectedTab)
        const filterCategories = testCategories.filter(category => category.type === selectedTab)
@@ -53,34 +54,28 @@ class CreatePage extends React.Component {
         "cid": "1",
         "timestamp": 1534291200000
       }
-       return (
-         <AppContext.Consumer>
-           {({state}) => {
-             return (
-              <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}} > 
-                <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
-                  <Tab>支出</Tab>
-                  <Tab>收入</Tab>
-                </Tabs>
-                <CategorySelect categories={filterCategories} 
-                  onSelectCategory={this.selectCategory}
-                  selectedCategory={selectedCategory}
-                />
-                <PriceFrom onFormSubmit = {this.submitFrom} 
-                  onCancelSubmit = {this.cancelSubmit}
-                  item = {editItem}
-                />
-                { !validationPassed &&
-                  <div className="alert alert-danger mt-5" role="alert">
-                      请选择分类信息
-                  </div>
-                }
-              </div>
-             )
-           }}
-        </AppContext.Consumer>
-       )
+      return (
+        <div className="create-page py-3 px-3 rounded mt-3" style={{background: '#fff'}} > 
+          <Tabs activeIndex={tabIndex} onTabChange={this.tabChange}>
+            <Tab>支出</Tab>
+            <Tab>收入</Tab>
+          </Tabs>
+          <CategorySelect categories={filterCategories} 
+            onSelectCategory={this.selectCategory}
+            selectedCategory={selectedCategory}
+          />
+          <PriceFrom onFormSubmit = {this.submitFrom} 
+            onCancelSubmit = {this.cancelSubmit}
+            item = {editItem}
+          />
+          { !validationPassed &&
+            <div className="alert alert-danger mt-5" role="alert">
+              请选择分类信息
+            </div>
+          }
+        </div>
+      )
    }
 }
 
-export default CreatePage
+export default withContext(CreatePage)
