@@ -1,69 +1,20 @@
 import React,{Component} from 'react';
 import Ionicon from 'react-ionicons';
 import logo from '../logo.svg';
-
-import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME, parseToYearAndMonth, padLeft } from '../utility'
+import { withRouter } from 'react-router-dom'
+import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME } from '../utility'
 import PriceList from '../components/PriceList'
 import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalPrice from '../components/TotalPrice'
 import { Tabs, Tab } from '../components/Tabs';
 import withContext from '../WithContext'
-
-export const categorys = {
-    "1" : {
-        id:1,
-        name:"旅行",
-        type:'outcome',
-        iconName:'ios-plane'
-    },
-    "2" : {
-        id:2,
-        name:"理财",
-        type:'income',
-        iconName:'logo-yen'
-    }
-}
-
-export const items=[
-    {
-      id:1,
-      title:'去云南旅游',
-      price:200,
-      date:'2018-09-10',
-      cid: 1
-    },
-    {
-      id:2,
-      title:'去云南旅游',
-      price:400,
-      date:'2018-09-10',
-      cid: 1
-    },
-    {
-      id:3,
-      title:'理财收入',
-      price:200,
-      date:'2018-10-10',
-      cid: 2
-    }
-  ]
-
-  export const newItem = {
-    id: 4,
-    title: '新添加的项目',
-    price: 300,
-    date: '2018-10-10',
-    cid: 1
-  }
   
-  const tabsText = [LIST_VIEW, CHART_VIEW]
-  class Home extends Component {
+const tabsText = [LIST_VIEW, CHART_VIEW]
+class Home extends Component {
     constructor(props){
       super(props)
       this.state = {
-        items,
-        currentDate: parseToYearAndMonth('2018/10/01'),
         tabView: tabsText[0]
       }
     }
@@ -73,42 +24,25 @@ export const items=[
       })
     }
     changeDate = (year, month) => {
-      this.setState({
-        currentDate: {year, month}
-      })
-    }
-    modifyItem = (modifiedItem) => {
-      const modifiedItems = this.state.items.map(item => {
-        if(item.id === modifiedItem.id){
-          return { ...item,title:'更新后的标题' }
-        }else{
-          return item
-        }
-      })
-      this.setState({
-        items: modifiedItems
-      })
+      this.props.actions.selectNewMonth(year, month)
     }
     createItem = () => {
-      this.setState({
-        items: [newItem, ...this.state.items]
-      })
+      this.props.history.push('/create')
     }
-    deleteItem = (deletedItem) => {
-      const filteredItems = this.state.items.filter(item => item.id !== deletedItem.id)
-      this.setState({
-        items: filteredItems
-      })
+    modifyItem = (item) => {
+      this.props.history.push(`/edit/${item.id}`)
+    }
+    deleteItem = (item) => {
+      this.props.actions.deleteItem(item)
     }
     render(){
       const { data } = this.props
-      const { items, currentDate, tabView } = this.state
+      const { items, categories, currentDate } = data
+      const { tabView } = this.state
       const tabIndex = tabsText.findIndex(tabText => tabText === tabView)
-      const itemsWithCategory = items.map(item => {
-          item.category = categorys[item.cid]
-          return item
-      }).filter(item => {
-        return item.date.includes(`${currentDate.year}-${padLeft(currentDate.month)}`)
+      const itemsWithCategory = Object.keys(items).map(id => {
+        items[id].category = categories[items[id].cid]
+        return items[id]
       })
       let totalIncome = 0, totalOutcome = 0
       itemsWithCategory.forEach(item => {
@@ -180,4 +114,4 @@ export const items=[
     }
   }
 
-  export default withContext(Home)
+  export default withRouter(withContext(Home))

@@ -4,9 +4,9 @@ import { AppContext } from './App'
 const withContext = (Component) => {
     return (props) => (
        <AppContext.Consumer>
-          {({state}) => {
+          {({state, actions}) => {
             return (
-              <Component {...props} data={state} />
+              <Component {...props} data={state} actions={actions} />
             )
           }}
        </AppContext.Consumer>
