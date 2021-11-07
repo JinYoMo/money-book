@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import axios from 'axios'
+import App from './App'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// axios.get('/items').then(res=>{
+//   console.log(res)
+// })
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const newItem = {
+  "title": "请别人唱歌",
+  "price": 10000,
+  "date": "2019-01-05",
+  "monthCategory": "2019-1",
+  "timestamp": 1546646400000,
+  "id": "_cg4a9gzya11",
+  "cid": "1"
+}
+axios.post('/items',newItem).then(res=>{
+  console.log(res)
+})
+
+ReactDOM.render(<App />, document.getElementById('root'));
