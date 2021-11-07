@@ -38,6 +38,30 @@ class App extends Component {
         })
         return { items, categories }
       }),
+      getEditData: withLoading(async (id) => {
+        let promiseArr = [axios.get('/categories')]
+        if(id){
+          const getURLWithID = `/items/${id}`
+          promiseArr.push(axios.get(getURLWithID))
+        }
+        const [categories, editItem] = await Promise.all(promiseArr)
+        if(id){
+          this.setState({
+            categories: flatternArr(categories.data),
+            items: {...this.state.items, [id]: editItem.data},
+            isLoading: false,
+          })
+        }else{
+          this.setState({
+            categories: flatternArr(categories.data),
+            isLoading: false,
+          })
+        }
+        return { 
+          categories: flatternArr(categories.data),
+          editItem: editItem ? editItem.data : null
+        }
+      }),
       selectNewMonth: withLoading(async (year, month) => {
         const getURLWithData = `/items?monthCategory=${year}-${month}&_sort=timestamp&_order=desc`
         const items = await axios.get(getURLWithData)
@@ -64,7 +88,7 @@ class App extends Component {
         data.timestamp = new Date(data.date).getTime()
         const newItem = await axios.post('/items', { ...data, id: newId, cid: categoryId })
         this.setState({
-          items: { ...this.state.items, [newId]: newItem },
+          items: { ...this.state.items, [newId]: newItem.data },
           isLoading: false,
         })
         return newItem.data
