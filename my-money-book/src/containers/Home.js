@@ -7,6 +7,7 @@ import PriceList from '../components/PriceList'
 import MonthPicker from '../components/MonthPicker'
 import CreateBtn from '../components/CreateBtn'
 import TotalPrice from '../components/TotalPrice'
+import Loader from '../components/Loader'
 import { Tabs, Tab } from '../components/Tabs';
 import withContext from '../WithContext'
   
@@ -17,6 +18,11 @@ class Home extends Component {
       this.state = {
         tabView: tabsText[0]
       }
+    }
+    componentDidMount(){
+      this.props.actions.getInitalData().then(data => {
+        console.log(data)
+      })
     }
     changeView = (index) => {
       this.setState({
@@ -37,7 +43,7 @@ class Home extends Component {
     }
     render(){
       const { data } = this.props
-      const { items, categories, currentDate } = data
+      const { items, categories, currentDate, isLoading } = data
       const { tabView } = this.state
       const tabIndex = tabsText.findIndex(tabText => tabText === tabView)
       const itemsWithCategory = Object.keys(items).map(id => {
@@ -75,38 +81,50 @@ class Home extends Component {
             </div>
           </header>
           <div className="content-area py-3 px-3" >
-            <Tabs activeIndex={tabIndex} onTabChange={this.changeView}>
-              <Tab>
-                <Ionicon 
-                  className="rounded-circle mr-2"
-                  fontSize="20px"
-                  color={'#007bff'}
-                  icon="ios-paper"
-                />
-                  列表模式
-              </Tab>
-              <Tab>
-                <Ionicon 
-                  className="rounded-circle mr-2"
-                  fontSize="20px"
-                  color={'#007bff'}
-                  icon="ios-pie"
-                />
-                  图表模式
-              </Tab>
-            </Tabs>
-            <CreateBtn onClick={this.createItem} />
-            {
-              tabView === LIST_VIEW &&
-              <PriceList 
-                items={itemsWithCategory}
-                onModifyItem={this.modifyItem}
-                onDeleteItem={this.deleteItem}
-              />
+            { isLoading &&
+              <Loader />
             }
-            {
-              tabView === CHART_VIEW &&
-              <h1 className="chart-title">这里是图表区域</h1>
+            { !isLoading &&
+              <React.Fragment>
+                <Tabs activeIndex={tabIndex} onTabChange={this.changeView}>
+                  <Tab>
+                    <Ionicon 
+                      className="rounded-circle mr-2"
+                      fontSize="20px"
+                      color={'#007bff'}
+                      icon="ios-paper"
+                    />
+                      列表模式
+                  </Tab>
+                  <Tab>
+                    <Ionicon 
+                      className="rounded-circle mr-2"
+                      fontSize="20px"
+                      color={'#007bff'}
+                      icon="ios-pie"
+                    />
+                      图表模式
+                  </Tab>
+                </Tabs>
+                <CreateBtn onClick={this.createItem} />
+                {
+                  tabView === LIST_VIEW &&
+                  <PriceList 
+                    items={itemsWithCategory}
+                    onModifyItem={this.modifyItem}
+                    onDeleteItem={this.deleteItem}
+                  />
+                }
+                { tabView === LIST_VIEW && itemsWithCategory.length === 0 &&
+                  <div className="alert alert-light text-center no-record">
+                    您还没有任何记账记录
+                  </div>
+                }
+                {
+                  tabView === CHART_VIEW &&
+                  <h1 className="chart-title">这里是图表区域</h1>
+                }
+              </React.Fragment>
             }
           </div>
         </React.Fragment>
