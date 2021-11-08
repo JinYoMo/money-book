@@ -228,7 +228,13 @@
       "monthCategory": "2021-11",
       "timestamp": 1637280000000,
       "id": "_1nuwnnly0",
-      "cid": "6"
+      "cid": "6",
+      "category": {
+        "name": "娱乐",
+        "iconName": "ios-beer",
+        "id": "6",
+        "type": "outcome"
+      }
     },
     {
       "title": "KTV",
