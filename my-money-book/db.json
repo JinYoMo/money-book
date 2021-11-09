@@ -262,6 +262,51 @@
       "timestamp": 1636502400000,
       "id": "_a51131oyp",
       "cid": "11"
+    },
+    {
+      "title": "买猫粮",
+      "price": 200,
+      "date": "2021-11-09",
+      "monthCategory": "2021-11",
+      "timestamp": 1636416000000,
+      "id": "_s2bxcflzv",
+      "cid": "9"
+    },
+    {
+      "title": "股票投资",
+      "price": 2000,
+      "date": "2021-11-11",
+      "monthCategory": "2021-11",
+      "timestamp": 1636588800000,
+      "id": "_ppwfcylhk",
+      "cid": "12"
+    },
+    {
+      "title": "学习授课",
+      "price": 1000,
+      "date": "2021-11-23",
+      "monthCategory": "2021-11",
+      "timestamp": 1637625600000,
+      "id": "_cazzmu10x",
+      "cid": "15"
+    },
+    {
+      "title": "买平板",
+      "price": 3999,
+      "date": "2021-12-02",
+      "monthCategory": "2021-12",
+      "timestamp": 1638403200000,
+      "id": "_tc9uf93jq",
+      "cid": "4"
+    },
+    {
+      "title": "买课程",
+      "price": 7399,
+      "date": "2021-11-10",
+      "monthCategory": "2021-11",
+      "timestamp": 1636502400000,
+      "id": "_4ral9xyxm",
+      "cid": "3"
     }
   ]
 }

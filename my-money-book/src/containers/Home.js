@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import Ionicon from 'react-ionicons';
 import logo from '../logo.svg';
 import { withRouter } from 'react-router-dom'
+import PieChart from '../components/PieChart'
 import { LIST_VIEW, CHART_VIEW, TYPE_INCOME, TYPE_OUTCOME } from '../utility'
 import PriceList from '../components/PriceList'
 import MonthPicker from '../components/MonthPicker'
@@ -12,6 +13,23 @@ import { Tabs, Tab } from '../components/Tabs';
 import withContext from '../WithContext'
   
 const tabsText = [LIST_VIEW, CHART_VIEW]
+
+const generateChartDataByCategory = (items, type = TYPE_INCOME) => {
+  let categoryMap = {}
+  items.filter(item => item.category.type === type).forEach(item => {
+    if(categoryMap[item.cid]){
+      categoryMap[item.cid].value += item.price * 1
+      categoryMap[item.cid].items.push(item.id)
+    }else{
+      categoryMap[item.cid] = {
+        name: item.category.name,
+        value: item.price * 1,
+        items: [item.id]
+      }
+    }
+  })
+  return Object.keys(categoryMap).map(mapKey => ( { ...categoryMap[mapKey] }))
+}
 class Home extends Component {
     constructor(props){
       super(props)
@@ -58,6 +76,9 @@ class Home extends Component {
             totalIncome += item.price
         }
       })
+      const chartOutcomDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_OUTCOME)
+      const chartIncomeDataByCategory = generateChartDataByCategory(itemsWithCategory, TYPE_INCOME)
+
       return (
         <React.Fragment>
           <header className="App-header">
@@ -122,7 +143,10 @@ class Home extends Component {
                 }
                 {
                   tabView === CHART_VIEW &&
-                  <h1 className="chart-title">这里是图表区域</h1>
+                  <React.Fragment>
+                    <PieChart title="本月支出" categoryData={chartOutcomDataByCategory} />
+                    <PieChart title="本月收入" categoryData={chartIncomeDataByCategory} />
+                  </React.Fragment>
                 }
               </React.Fragment>
             }
